@@ -41,7 +41,7 @@ public class UserServicesImpl implements UserServices{
         return userRepository.count();
     }
 
-        @Override
+    @Override
         public CreatePostResponse createPost(CreatePostRequest createPostRequest) {
             User foundUser = findUserByName(createPostRequest.getAuthor());
             if(!foundUser.isLoggedIn()) throw new UserNotLoggedInException("You need to log in to create post");
@@ -51,7 +51,6 @@ public class UserServicesImpl implements UserServices{
             userRepository.save(foundUser);
             return createPostResponseMap(post);
         }
-
         @Override
         public DeletePostResponse deletePost(DeletePostRequest deletePostRequest) {
             User foundUser = findUserByName(deletePostRequest.getAuthor());
@@ -64,6 +63,18 @@ public class UserServicesImpl implements UserServices{
             userRepository.save(foundUser);
             return deletePostResponseMap(post);
         }
+
+    @Override
+    public UserPostsResponse getUserPosts(String username) {
+        User user = findUserByName(username);
+        List<Post> posts = user.getPosts();
+        return allPostResponseMap(user, posts);
+    }
+
+    @Override
+    public void viewPost(ViewPostRequest viewPostRequest) {
+        postServices.addView(viewPostRequest);
+    }
 
     @Override
     public UserLoginResponse login(UserLoginRequest userLoginRequest) {

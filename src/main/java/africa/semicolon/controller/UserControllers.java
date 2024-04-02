@@ -66,4 +66,14 @@ public class UserControllers {
             return new ResponseEntity<>(new UserApiResponse(false, e.getMessage()), BAD_REQUEST);
         }
     }
+
+    @GetMapping("/all_posts/{username}")
+    public ResponseEntity<?> viewAllPosts(@PathVariable String username){
+        try {
+            UserPostsResponse response = userServices.getUserPosts(username);
+            return new ResponseEntity<>(new UserApiResponse(true, response), ACCEPTED);
+        } catch (FinalBlogExceptions e){
+            return new ResponseEntity<>(new UserApiResponse(false, e.getMessage()), BAD_REQUEST);
+        }
+    }
 }

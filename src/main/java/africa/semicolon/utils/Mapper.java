@@ -2,12 +2,15 @@ package africa.semicolon.utils;
 
 import africa.semicolon.data.models.Post;
 import africa.semicolon.data.models.User;
+import africa.semicolon.data.models.View;
 import africa.semicolon.dto.requests.CreatePostRequest;
 import africa.semicolon.dto.requests.DeletePostRequest;
 import africa.semicolon.dto.requests.UserRegisterRequest;
+import africa.semicolon.dto.requests.ViewPostRequest;
 import africa.semicolon.dto.responses.*;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class Mapper {
 
@@ -25,6 +28,12 @@ public class Mapper {
         post.setTitle(createPostRequest.getTitle());
         post.setContent(createPostRequest.getContent());
         return post;
+    }
+
+    public static View requestMap(ViewPostRequest viewPostRequest){
+        View view = new View();
+        view.setViewer(viewPostRequest.getViewer());
+        return view;
     }
 
     public static UserRegisterResponse responseMap(User user){
@@ -62,5 +71,12 @@ public class Mapper {
         deletePostResponse.setPostId(post.getId());
         deletePostResponse.setPostTitle(post.getTitle());
         return deletePostResponse;
+    }
+
+    public static UserPostsResponse allPostResponseMap(User user, List<Post> posts){
+        UserPostsResponse userPostsResponse = new UserPostsResponse();
+        userPostsResponse.setUsername(user.getUsername());
+        userPostsResponse.setPosts(posts);
+        return userPostsResponse;
     }
 }
