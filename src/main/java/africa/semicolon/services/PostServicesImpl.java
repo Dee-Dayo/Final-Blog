@@ -1,9 +1,11 @@
 package africa.semicolon.services;
 
+import africa.semicolon.data.models.Comment;
 import africa.semicolon.data.models.Post;
 import africa.semicolon.data.models.User;
 import africa.semicolon.data.models.View;
 import africa.semicolon.data.repositories.PostRepository;
+import africa.semicolon.dto.requests.CommentPostRequest;
 import africa.semicolon.dto.requests.ViewPostRequest;
 import africa.semicolon.exceptions.PostNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ public class PostServicesImpl implements PostServices{
     PostRepository postRepository;
     @Autowired
     ViewServices viewServices;
+    @Autowired
+    CommentServices commentServices;
 
     @Override
     public void addPost(Post post) {
@@ -46,6 +50,14 @@ public class PostServicesImpl implements PostServices{
         Post post = findPostById(viewPostRequest.getPostId());
         View view = viewServices.saveView(viewPostRequest);
         post.getViews().add(view);
+        postRepository.save(post);
+    }
+
+    @Override
+    public void addComment(CommentPostRequest commentPostRequest) {
+        Post post = findPostById(commentPostRequest.getPostId());
+        Comment comment = commentServices.saveComment(commentPostRequest);
+        post.getComments().add(comment);
         postRepository.save(post);
     }
 }

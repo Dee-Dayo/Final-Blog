@@ -1,6 +1,7 @@
 package africa.semicolon.services;
 
 import africa.semicolon.data.models.Post;
+import africa.semicolon.dto.requests.CommentPostRequest;
 import africa.semicolon.dto.requests.ViewPostRequest;
 
 public interface PostServices {
@@ -13,4 +14,6 @@ public interface PostServices {
     Post findPostById(String postId);
 
     void addView(ViewPostRequest viewPostRequest);
+
+    void addComment(CommentPostRequest commentPostRequest);
 }

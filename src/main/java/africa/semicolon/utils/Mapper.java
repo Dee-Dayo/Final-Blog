@@ -1,12 +1,10 @@
 package africa.semicolon.utils;
 
+import africa.semicolon.data.models.Comment;
 import africa.semicolon.data.models.Post;
 import africa.semicolon.data.models.User;
 import africa.semicolon.data.models.View;
-import africa.semicolon.dto.requests.CreatePostRequest;
-import africa.semicolon.dto.requests.DeletePostRequest;
-import africa.semicolon.dto.requests.UserRegisterRequest;
-import africa.semicolon.dto.requests.ViewPostRequest;
+import africa.semicolon.dto.requests.*;
 import africa.semicolon.dto.responses.*;
 
 import java.time.format.DateTimeFormatter;
@@ -34,6 +32,13 @@ public class Mapper {
         View view = new View();
         view.setViewer(viewPostRequest.getViewer());
         return view;
+    }
+
+    public static Comment requestMap(CommentPostRequest commentPostRequest){
+        Comment comment = new Comment();
+        comment.setCommenter(commentPostRequest.getCommenter());
+        comment.setComment(commentPostRequest.getComment());
+        return comment;
     }
 
     public static UserRegisterResponse responseMap(User user){

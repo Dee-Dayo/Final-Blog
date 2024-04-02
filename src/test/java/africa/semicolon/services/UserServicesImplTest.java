@@ -33,6 +33,8 @@ public class UserServicesImplTest {
     ViewRepository viewRepository;
     @Autowired
     ViewServices viewServices;
+    @Autowired
+    CommentServices commentServices;
 
 
     @BeforeEach
@@ -271,5 +273,44 @@ public class UserServicesImplTest {
         post = postServices.findPostById(user.getPosts().get(0).getId());
         assertEquals(1, post.getViews().size());
         assertEquals(1L, viewServices.countNoOfViews());
+    }
+
+    @Test
+    public void onePostCreated_userCanCommentOnPost(){
+        UserRegisterRequest userRegisterRequest = new UserRegisterRequest();
+        userRegisterRequest.setFirstName("Firstname");
+        userRegisterRequest.setLastName("Lastname");
+        userRegisterRequest.setPassword("password");
+        userRegisterRequest.setUsername("username");
+        userServices.register(userRegisterRequest);
+        assertEquals(1L, userServices.countNoOfUsers());
+
+        UserLoginRequest userLoginRequest = new UserLoginRequest();
+        userLoginRequest.setUsername("username");
+        userLoginRequest.setPassword("password");
+        userServices.login(userLoginRequest);
+        assertTrue(userServices.isUserLoggedIn("useRNAME"));
+
+        CreatePostRequest createPostRequest = new CreatePostRequest();
+        createPostRequest.setAuthor("username");
+        createPostRequest.setTitle("Title");
+        createPostRequest.setContent("Content");
+        userServices.createPost(createPostRequest);
+        assertEquals(1, postServices.countNoOfPosts());
+
+        User user = userServices.findUserByName("username");
+        Post post = postServices.findPostById(user.getPosts().get(0).getId());
+        assertEquals(0, post.getViews().size());
+
+        CommentPostRequest commentPostRequest = new CommentPostRequest();
+        commentPostRequest.setCommenter(user);
+        commentPostRequest.setPostId(post.getId());
+        commentPostRequest.setComment("Comment on this post");
+        userServices.addComment(commentPostRequest);
+
+
+        post = postServices.findPostById(user.getPosts().get(0).getId());
+        assertEquals(1, post.getComments().size());
+        assertEquals(1L, commentServices.countNoOfViews());
     }
 }

@@ -29,4 +29,6 @@ public interface UserServices {
     UserPostsResponse getUserPosts(String username);
 
     void viewPost(ViewPostRequest viewPostRequest);
+
+    void addComment(CommentPostRequest commentPostRequest);
 }
