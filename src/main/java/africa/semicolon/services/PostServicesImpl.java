@@ -6,6 +6,7 @@ import africa.semicolon.data.models.User;
 import africa.semicolon.data.models.View;
 import africa.semicolon.data.repositories.PostRepository;
 import africa.semicolon.dto.requests.CommentPostRequest;
+import africa.semicolon.dto.requests.DeleteCommentRequest;
 import africa.semicolon.dto.requests.ViewPostRequest;
 import africa.semicolon.exceptions.PostNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,14 @@ public class PostServicesImpl implements PostServices{
         Post post = findPostById(commentPostRequest.getPostId());
         Comment comment = commentServices.saveComment(commentPostRequest);
         post.getComments().add(comment);
+        postRepository.save(post);
+    }
+
+    @Override
+    public void deleteComment(DeleteCommentRequest deleteCommentRequest) {
+        Post post = findPostById(deleteCommentRequest.getPostId());
+        Comment comment = commentServices.removeComment(deleteCommentRequest);
+        post.getComments().remove(comment);
         postRepository.save(post);
     }
 }

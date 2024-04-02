@@ -31,4 +31,6 @@ public interface UserServices {
     void viewPost(ViewPostRequest viewPostRequest);
 
     void addComment(CommentPostRequest commentPostRequest);
+
+    void deleteComment(DeleteCommentRequest deleteCommentREquest);
 }

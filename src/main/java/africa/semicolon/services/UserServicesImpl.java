@@ -82,6 +82,11 @@ public class UserServicesImpl implements UserServices{
     }
 
     @Override
+    public void deleteComment(DeleteCommentRequest deleteCommentREquest) {
+        postServices.deleteComment(deleteCommentREquest);
+    }
+
+    @Override
     public UserLoginResponse login(UserLoginRequest userLoginRequest) {
         User user = findUserByName(userLoginRequest.getUsername().toLowerCase());
         validatePassword(userLoginRequest);
