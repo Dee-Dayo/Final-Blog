@@ -45,6 +45,9 @@ public class UserServicesImpl implements UserServices{
         public CreatePostResponse createPost(CreatePostRequest createPostRequest) {
             User foundUser = findUserByName(createPostRequest.getAuthor());
             if(!foundUser.isLoggedIn()) throw new UserNotLoggedInException("You need to log in to create post");
+
+
+
             Post post = requestMap(createPostRequest);
             postServices.addPost(post);
             foundUser.getPosts().add(post);
@@ -72,18 +75,18 @@ public class UserServicesImpl implements UserServices{
     }
 
     @Override
-    public void viewPost(ViewPostRequest viewPostRequest) {
-        postServices.addView(viewPostRequest);
+    public ViewPostResponse viewPost(ViewPostRequest viewPostRequest) {
+        return postServices.addView(viewPostRequest);
     }
 
     @Override
-    public void addComment(CommentPostRequest commentPostRequest) {
-        postServices.addComment(commentPostRequest);
+    public CommentPostResponse addComment(CommentPostRequest commentPostRequest) {
+        return postServices.addComment(commentPostRequest);
     }
 
     @Override
-    public void deleteComment(DeleteCommentRequest deleteCommentREquest) {
-        postServices.deleteComment(deleteCommentREquest);
+    public CommentPostResponse deleteComment(DeleteCommentRequest deleteCommentREquest) {
+        return postServices.deleteComment(deleteCommentREquest);
     }
 
     @Override

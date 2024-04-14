@@ -47,7 +47,7 @@ public class UserControllers {
         }
     }
 
-    @PostMapping("/delete_post")
+    @DeleteMapping("/delete_post")
     public ResponseEntity<?> deletePost(@RequestBody DeletePostRequest deletePostRequest){
         try {
             DeletePostResponse response = userServices.deletePost(deletePostRequest);
@@ -67,8 +67,38 @@ public class UserControllers {
         }
     }
 
-    @GetMapping("/all_posts/{username}")
-    public ResponseEntity<?> viewAllPosts(@PathVariable String username){
+    @PatchMapping("/view_post")
+    public ResponseEntity<?> viewPost(@RequestBody ViewPostRequest viewPostRequest){
+        try {
+            ViewPostResponse response = userServices.viewPost(viewPostRequest);
+            return new ResponseEntity<>(new UserApiResponse(true, response), OK);
+        } catch (FinalBlogExceptions e){
+            return new ResponseEntity<>(new UserApiResponse(false, e.getMessage()), BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping("/add_comment")
+    public ResponseEntity<?> addComment(@RequestBody CommentPostRequest commentPostRequest){
+        try {
+            CommentPostResponse response = userServices.addComment(commentPostRequest);
+            return new ResponseEntity<>(new UserApiResponse(true, response), CREATED);
+        } catch (FinalBlogExceptions e){
+            return new ResponseEntity<>(new UserApiResponse(false, e.getMessage()), BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete_comment")
+    public ResponseEntity<?> deleteComment(@RequestBody DeleteCommentRequest deleteCommentRequest){
+        try {
+            CommentPostResponse response = userServices.deleteComment(deleteCommentRequest);
+            return new ResponseEntity<>(new UserApiResponse(true, response), ACCEPTED);
+        } catch (FinalBlogExceptions e){
+            return new ResponseEntity<>(new UserApiResponse(false, e.getMessage()), BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/all_posts")
+    public ResponseEntity<?> viewAllPosts(@RequestBody String username){
         try {
             UserPostsResponse response = userServices.getUserPosts(username);
             return new ResponseEntity<>(new UserApiResponse(true, response), ACCEPTED);

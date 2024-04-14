@@ -45,7 +45,7 @@ public class Mapper {
         UserRegisterResponse response = new UserRegisterResponse();
         response.setUsername(user.getUsername());
         response.setId(user.getId());
-        response.setDateCreated(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(user.getDateCreated()));
+        response.setDateCreated(DateTimeFormatter.ofPattern("dd/MM/yyyy, hh:mm:ss").format(user.getDateCreated()));
         return response;
     }
 
@@ -83,5 +83,21 @@ public class Mapper {
         userPostsResponse.setUsername(user.getUsername());
         userPostsResponse.setPosts(posts);
         return userPostsResponse;
+    }
+
+    public static ViewPostResponse viewPostResponseMap(Post post, View view){
+        ViewPostResponse viewPostResponse = new ViewPostResponse();
+        viewPostResponse.setPostTitle(post.getTitle());
+        viewPostResponse.setViewerName(viewPostResponse.getViewerName());
+        viewPostResponse.setViewerId(view.getId());
+        return viewPostResponse;
+    }
+
+    public static CommentPostResponse commentPostResponseMap(Post post, Comment comment){
+        CommentPostResponse commentPostResponse = new CommentPostResponse();
+        commentPostResponse.setPostTitle(post.getTitle());
+        commentPostResponse.setCommenterName(comment.getCommenter().getUsername());
+        commentPostResponse.setCommenterId(comment.getId());
+        return commentPostResponse;
     }
 }

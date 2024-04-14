@@ -221,7 +221,7 @@ public class UserServicesImplTest {
 
         userServices.createPost(createPostRequest);
         assertEquals(1, postServices.countNoOfPosts());
-
+ 
         User user = userServices.findUserByName("username");
         Post post = postServices.findPostById(user.getPosts().getFirst().getId());
         assertEquals(0, post.getViews().size());

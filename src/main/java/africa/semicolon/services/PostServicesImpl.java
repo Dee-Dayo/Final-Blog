@@ -2,17 +2,21 @@ package africa.semicolon.services;
 
 import africa.semicolon.data.models.Comment;
 import africa.semicolon.data.models.Post;
-import africa.semicolon.data.models.User;
 import africa.semicolon.data.models.View;
 import africa.semicolon.data.repositories.PostRepository;
 import africa.semicolon.dto.requests.CommentPostRequest;
 import africa.semicolon.dto.requests.DeleteCommentRequest;
 import africa.semicolon.dto.requests.ViewPostRequest;
+import africa.semicolon.dto.responses.CommentPostResponse;
+import africa.semicolon.dto.responses.ViewPostResponse;
 import africa.semicolon.exceptions.PostNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static africa.semicolon.utils.Mapper.commentPostResponseMap;
+import static africa.semicolon.utils.Mapper.viewPostResponseMap;
 
 @Service
 public class PostServicesImpl implements PostServices{
@@ -47,26 +51,29 @@ public class PostServicesImpl implements PostServices{
     }
 
     @Override
-    public void addView(ViewPostRequest viewPostRequest) {
+    public ViewPostResponse addView(ViewPostRequest viewPostRequest) {
         Post post = findPostById(viewPostRequest.getPostId());
         View view = viewServices.saveView(viewPostRequest);
         post.getViews().add(view);
-        postRepository.save(post);
+        Post newPost = postRepository.save(post);
+        return viewPostResponseMap(newPost, view);
     }
 
     @Override
-    public void addComment(CommentPostRequest commentPostRequest) {
+    public CommentPostResponse addComment(CommentPostRequest commentPostRequest) {
         Post post = findPostById(commentPostRequest.getPostId());
         Comment comment = commentServices.saveComment(commentPostRequest);
         post.getComments().add(comment);
-        postRepository.save(post);
+        Post newPost = postRepository.save(post);
+        return commentPostResponseMap(newPost, comment);
     }
 
     @Override
-    public void deleteComment(DeleteCommentRequest deleteCommentRequest) {
+    public CommentPostResponse deleteComment(DeleteCommentRequest deleteCommentRequest) {
         Post post = findPostById(deleteCommentRequest.getPostId());
         Comment comment = commentServices.removeComment(deleteCommentRequest);
         post.getComments().remove(comment);
-        postRepository.save(post);
+        Post newPost = postRepository.save(post);
+        return commentPostResponseMap(newPost, comment);
     }
 }
